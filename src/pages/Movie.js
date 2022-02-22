@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getMovie, selectMovie } from "../store/movies";
+import { getMovie, selectMovie, createLike } from "../store/movies";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -11,6 +11,18 @@ export default function Movie() {
   useEffect(() => {
     dispatch(getMovie(id));
   }, [id]);
+
+  function handleSubmit(number) {
+    dispatch(
+      createLike({
+        movie_id: movie.id,
+        like: { like: number },
+        onSuccess: () => {
+          dispatch(getMovie(id));
+        },
+      })
+    );
+  }
 
   if (!movie) {
     return null;
@@ -23,6 +35,14 @@ export default function Movie() {
           <h1>{movie.title}</h1>
           <h3>{movie.genre}</h3>
           <p>{movie.description}</p>
+          <h3>Number of like {movie.likes}</h3>
+          <h3>Number of dislike {movie.dislikes}</h3>
+          <button disabled={movie.is_liked} onClick={() => handleSubmit(1)}>
+            Like
+          </button>
+          <button disabled={movie.is_liked} onClick={() => handleSubmit(-1)}>
+            Dislike
+          </button>
         </div>
       </div>
     </div>

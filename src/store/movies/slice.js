@@ -4,6 +4,7 @@ const middlewareActions = {
   getMovies() {},
   getMovie() {},
   createMovie() {},
+  createLike() {},
 };
 
 const moviesSlice = createSlice({
@@ -30,5 +31,11 @@ const moviesSlice = createSlice({
 
 export default moviesSlice.reducer;
 
-export const { getMovies, setMovies, getMovie, setMovie, createMovie } =
-  moviesSlice.actions;
+export const {
+  getMovies,
+  setMovies,
+  getMovie,
+  setMovie,
+  createMovie,
+  createLike,
+} = moviesSlice.actions;

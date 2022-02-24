@@ -5,3 +5,7 @@ export function selectMovies(state) {
 export function selectMovie(state) {
   return state.movies.selectedMovie;
 }
+
+export function selectComments(state) {
+  return state.movies.comments;
+}

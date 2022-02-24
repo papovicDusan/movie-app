@@ -43,6 +43,8 @@ export default function AppMovies() {
                   <Link className="btn btn-light" to={`/movies/${movie.id}`}>
                     Movie detail
                   </Link>
+                  <p>Number of like {movie.likes}</p>
+                  <p>Number of dislike {movie.dislikes}</p>
                 </div>
               </div>
             </div>

@@ -1,6 +1,13 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import moviesService from "../../services/MoviesService";
-import { getMovies, setMovies, getMovie, setMovie, createMovie } from "./slice";
+import {
+  getMovies,
+  setMovies,
+  getMovie,
+  setMovie,
+  createMovie,
+  createLike,
+} from "./slice";
 
 function* handleGetMovies(action) {
   try {
@@ -37,6 +44,21 @@ function* handleCreateMovie(action) {
   }
 }
 
+function* handleCreateLike(action) {
+  try {
+    const movie = yield call(
+      moviesService.createLike,
+      action.payload.movie_id,
+      action.payload.like
+    );
+    if (action.payload.onSuccess) {
+      yield call(action.payload.onSuccess);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -47,4 +69,8 @@ export function* watchGetMovie() {
 
 export function* watchCreateMovie() {
   yield takeLatest(createMovie.type, handleCreateMovie);
+}
+
+export function* watchCreateLike() {
+  yield takeLatest(createLike.type, handleCreateLike);
 }

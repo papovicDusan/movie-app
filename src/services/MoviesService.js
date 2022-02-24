@@ -29,6 +29,14 @@ class MoviesService extends HttpService {
     const { data } = await this.client.post(`movies/`, movieData);
     return data;
   };
+
+  createLike = async (movie_id, like) => {
+    const { data } = await this.client.post(
+      `movies/likes/${movie_id}/like-create/`,
+      like
+    );
+    return data;
+  };
 }
 
 const moviesService = new MoviesService();

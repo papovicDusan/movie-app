@@ -37,6 +37,7 @@ export default function Movie() {
           <p>{movie.description}</p>
           <h3>Number of like {movie.likes}</h3>
           <h3>Number of dislike {movie.dislikes}</h3>
+          <h3>Number of visit {movie.number_visit}</h3>
           <button disabled={movie.is_liked} onClick={() => handleSubmit(1)}>
             Like
           </button>

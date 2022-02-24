@@ -45,6 +45,7 @@ export default function AppMovies() {
                   </Link>
                   <p>Number of like {movie.likes}</p>
                   <p>Number of dislike {movie.dislikes}</p>
+                  <p>Number of visit {movie.number_visit}</p>
                 </div>
               </div>
             </div>

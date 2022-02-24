@@ -9,6 +9,9 @@ import {
   createLike,
   createComment,
   addComment,
+  getComments,
+  setComments,
+  addComments,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -74,6 +77,23 @@ function* handleCreateComment(action) {
   }
 }
 
+function* handleGetComments(action) {
+  try {
+    const comments = yield call(
+      moviesService.getComments,
+      action.payload.movie_id,
+      action.payload.page
+    );
+    if (action.payload?.page > 1) {
+      yield put(addComments(comments));
+    } else {
+      yield put(setComments(comments));
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -92,4 +112,8 @@ export function* watchCreateLike() {
 
 export function* watchCreateComment() {
   yield takeLatest(createComment.type, handleCreateComment);
+}
+
+export function* watchGetComments() {
+  yield takeLatest(getComments.type, handleGetComments);
 }

@@ -6,6 +6,7 @@ const middlewareActions = {
   createMovie() {},
   createLike() {},
   createComment() {},
+  getComments() {},
 };
 
 const moviesSlice = createSlice({
@@ -18,6 +19,12 @@ const moviesSlice = createSlice({
       results: [],
     },
     selectedMovie: null,
+    comments: {
+      count: 0,
+      next: "",
+      previous: "",
+      results: [],
+    },
   },
   reducers: {
     setMovies(state, action) {
@@ -28,6 +35,16 @@ const moviesSlice = createSlice({
     },
     addComment(state, action) {
       state.selectedMovie.movie_comments.push(action.payload);
+    },
+    setComments(state, action) {
+      state.comments = action.payload;
+    },
+    addComments(state, action) {
+      action.payload.results = [
+        ...state.comments.results,
+        ...action.payload.results,
+      ];
+      state.comments = action.payload;
     },
     ...middlewareActions,
   },
@@ -44,4 +61,7 @@ export const {
   createLike,
   createComment,
   addComment,
+  getComments,
+  setComments,
+  addComments,
 } = moviesSlice.actions;

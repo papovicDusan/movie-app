@@ -12,6 +12,12 @@ import {
   getComments,
   setComments,
   addComments,
+  getPopularMovies,
+  getGenreMovies,
+  setPopularMovies,
+  setGenreMovies,
+  setLikes,
+  setDislikes,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -56,8 +62,11 @@ function* handleCreateLike(action) {
       action.payload.movie_id,
       action.payload.like
     );
-    if (action.payload.onSuccess) {
-      yield call(action.payload.onSuccess);
+    if (movie.like == 1) {
+      yield put(setLikes());
+    }
+    if (movie.like == -1) {
+      yield put(setDislikes());
     }
   } catch (error) {
     console.error(error);
@@ -71,7 +80,10 @@ function* handleCreateComment(action) {
       action.payload.movie_id,
       action.payload.comment
     );
-    yield put(addComment(comment));
+    if (action.payload.onSuccess) {
+      yield call(action.payload.onSuccess);
+    }
+    // yield put(addComment(comment));
   } catch (error) {
     console.error(error);
   }
@@ -89,6 +101,24 @@ function* handleGetComments(action) {
     } else {
       yield put(setComments(comments));
     }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* handleGetPopularMovies(action) {
+  try {
+    const movies = yield call(moviesService.getPopularMovies);
+    yield put(setPopularMovies(movies));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* handleGetGenreMovies(action) {
+  try {
+    const movies = yield call(moviesService.getGenreMovies, action.payload);
+    yield put(setGenreMovies(movies));
   } catch (error) {
     console.error(error);
   }
@@ -116,4 +146,12 @@ export function* watchCreateComment() {
 
 export function* watchGetComments() {
   yield takeLatest(getComments.type, handleGetComments);
+}
+
+export function* watchGetPopularMovies() {
+  yield takeLatest(getPopularMovies.type, handleGetPopularMovies);
+}
+
+export function* watchGetGenreMovies() {
+  yield takeLatest(getGenreMovies.type, handleGetGenreMovies);
 }

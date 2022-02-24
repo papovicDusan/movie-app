@@ -50,6 +50,16 @@ class MoviesService extends HttpService {
     const { data } = await this.client.get(endpoint);
     return data;
   };
+
+  getPopularMovies = async () => {
+    const { data } = await this.client.get(`movies/movie-popular-list/`);
+    return data;
+  };
+
+  getGenreMovies = async (id) => {
+    const { data } = await this.client.get(`movies/${id}/movie-genre-list/`);
+    return data;
+  };
 }
 
 const moviesService = new MoviesService();

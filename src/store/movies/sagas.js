@@ -7,6 +7,8 @@ import {
   setMovie,
   createMovie,
   createLike,
+  createComment,
+  addComment,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -59,6 +61,19 @@ function* handleCreateLike(action) {
   }
 }
 
+function* handleCreateComment(action) {
+  try {
+    const comment = yield call(
+      moviesService.createComment,
+      action.payload.movie_id,
+      action.payload.comment
+    );
+    yield put(addComment(comment));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -73,4 +88,8 @@ export function* watchCreateMovie() {
 
 export function* watchCreateLike() {
   yield takeLatest(createLike.type, handleCreateLike);
+}
+
+export function* watchCreateComment() {
+  yield takeLatest(createComment.type, handleCreateComment);
 }

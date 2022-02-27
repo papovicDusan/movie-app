@@ -71,12 +71,8 @@ export default function Movie() {
           <h3>Number of like {movie.likes}</h3>
           <h3>Number of dislike {movie.dislikes}</h3>
           <h3>Number of visit {movie.number_visit}</h3>
-          <button disabled={movie.is_liked} onClick={() => addLike(1)}>
-            Like
-          </button>
-          <button disabled={movie.is_liked} onClick={() => addLike(-1)}>
-            Dislike
-          </button>
+          <button onClick={() => addLike(1)}>Like</button>
+          <button onClick={() => addLike(-1)}>Dislike</button>
 
           <h3>Create Comment</h3>
           <form>

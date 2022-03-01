@@ -8,7 +8,6 @@ import {
   createMovie,
   createLike,
   createComment,
-  addComment,
   getComments,
   setComments,
   addComments,
@@ -18,6 +17,10 @@ import {
   setGenreMovies,
   setLikes,
   setDislikes,
+  deleteLike,
+  removeLikes,
+  removeDislikes,
+  addVisit,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -45,7 +48,7 @@ function* handleGetMovie(action) {
 
 function* handleCreateMovie(action) {
   try {
-    const movie = yield call(moviesService.createMovie, action.payload.movie);
+    yield call(moviesService.createMovie, action.payload.movie);
 
     if (action.payload.onSuccess) {
       yield call(action.payload.onSuccess);
@@ -57,16 +60,34 @@ function* handleCreateMovie(action) {
 
 function* handleCreateLike(action) {
   try {
-    const movie = yield call(
+    yield call(
       moviesService.createLike,
       action.payload.movie_id,
       action.payload.like
     );
-    if (movie.like == 1) {
+    if (action.payload.like.like === 1) {
       yield put(setLikes());
     }
-    if (movie.like == -1) {
+    if (action.payload.like.like === -1) {
       yield put(setDislikes());
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* handleDeleteLike(action) {
+  try {
+    yield call(
+      moviesService.deleteLike,
+      action.payload.movie_id,
+      action.payload.like
+    );
+    if (action.payload.like.like === 1) {
+      yield put(removeLikes());
+    }
+    if (action.payload.like.like === -1) {
+      yield put(removeDislikes());
     }
   } catch (error) {
     console.error(error);
@@ -75,7 +96,7 @@ function* handleCreateLike(action) {
 
 function* handleCreateComment(action) {
   try {
-    const comment = yield call(
+    yield call(
       moviesService.createComment,
       action.payload.movie_id,
       action.payload.comment
@@ -124,6 +145,14 @@ function* handleGetGenreMovies(action) {
   }
 }
 
+function* handleAddVisit(action) {
+  try {
+    yield call(moviesService.addVisit, action.payload);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -140,6 +169,10 @@ export function* watchCreateLike() {
   yield takeLatest(createLike.type, handleCreateLike);
 }
 
+export function* watchDeleteLike() {
+  yield takeLatest(deleteLike.type, handleDeleteLike);
+}
+
 export function* watchCreateComment() {
   yield takeLatest(createComment.type, handleCreateComment);
 }
@@ -154,4 +187,8 @@ export function* watchGetPopularMovies() {
 
 export function* watchGetGenreMovies() {
   yield takeLatest(getGenreMovies.type, handleGetGenreMovies);
+}
+
+export function* watchAddVisit() {
+  yield takeLatest(addVisit.type, handleAddVisit);
 }

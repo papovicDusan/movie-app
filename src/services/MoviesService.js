@@ -30,34 +30,43 @@ class MoviesService extends HttpService {
   };
 
   createLike = async (movie_id, like) => {
-    const { data } = await this.client.post(
-      `movies/likes/${movie_id}/like-create/`,
-      like
+    const { data } = await this.client.post(`movies/${movie_id}/like/`, like);
+    return data;
+  };
+
+  deleteLike = async (movie_id) => {
+    const { data } = await this.client.delete(
+      `movies/${movie_id}/delete-like/`
     );
     return data;
   };
 
   createComment = async (movie_id, comment) => {
     const { data } = await this.client.post(
-      `movies/comments/${movie_id}/comment-create/`,
+      `movies/${movie_id}/comments/`,
       comment
     );
     return data;
   };
 
   getComments = async (movie_id = "", page = 1) => {
-    let endpoint = `movies/comments/${movie_id}/comment-list/?page=${page}`;
+    let endpoint = `movies/${movie_id}/comments/?page=${page}`;
     const { data } = await this.client.get(endpoint);
     return data;
   };
 
   getPopularMovies = async () => {
-    const { data } = await this.client.get(`movies/movie-popular-list/`);
+    const { data } = await this.client.get(`popular-movies/`);
     return data;
   };
 
   getGenreMovies = async (id) => {
-    const { data } = await this.client.get(`movies/${id}/movie-genre-list/`);
+    const { data } = await this.client.get(`movies/${id}/related-movies/`);
+    return data;
+  };
+
+  addVisit = async (id) => {
+    const { data } = await this.client.patch(`movies/${id}/visits/`);
     return data;
   };
 }

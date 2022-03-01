@@ -1,7 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getMovies } from "../store/movies";
-import _ from "lodash";
 
 export default function MoviesFilter() {
   const [searchTerm, setSearchTerm] = useState("");

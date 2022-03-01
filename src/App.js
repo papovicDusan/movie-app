@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 import NavBar from "./components/NavBar";
@@ -11,11 +10,11 @@ import AppMovies from "./pages/AppMovies";
 import Movie from "./pages/Movie";
 import CreateMovie from "./pages/CreateMovie";
 
-import { getActiveUser, selectIsAuthenticated } from "./store/auth";
+// import { getActiveUser, selectIsAuthenticated } from "./store/auth";
 
 function App() {
-  const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  // const dispatch = useDispatch();
+  // const isAuthenticated = useSelector(selectIsAuthenticated);
 
   // useEffect(() => {
   //   if (isAuthenticated) {

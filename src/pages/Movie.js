@@ -10,6 +10,8 @@ import {
   selectComments,
   getGenreMovies,
   selectGenreMovies,
+  deleteLike,
+  addVisit,
 } from "../store/movies";
 import { Link } from "react-router-dom";
 
@@ -25,6 +27,7 @@ export default function Movie() {
   });
 
   useEffect(() => {
+    dispatch(addVisit(id));
     dispatch(getMovie(id));
     dispatch(getComments({ movie_id: id, page: 1 }));
     dispatch(getGenreMovies(id));
@@ -53,6 +56,15 @@ export default function Movie() {
     );
   }
 
+  function removeLike(number) {
+    dispatch(
+      deleteLike({
+        movie_id: movie.id,
+        like: { like: number },
+      })
+    );
+  }
+
   const seeComments = (pageNew) => {
     dispatch(getComments({ movie_id: id, page: pageNew }));
   };
@@ -70,10 +82,42 @@ export default function Movie() {
           <p>{movie.description}</p>
           <h3>Number of like {movie.likes}</h3>
           <h3>Number of dislike {movie.dislikes}</h3>
-          <h3>Number of visit {movie.number_visit}</h3>
-          <button onClick={() => addLike(1)}>Like</button>
-          <button onClick={() => addLike(-1)}>Dislike</button>
+          <h3>Number of visit {movie.visits}</h3>
+          {movie.liked_or_disliked_user === 1 ? (
+            <button
+              className="btn btn-warning"
+              disabled={movie.liked_or_disliked_user === 0}
+              onClick={() => removeLike(1)}
+            >
+              Remove Like
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              disabled={movie.liked_or_disliked_user === 1}
+              onClick={() => addLike(1)}
+            >
+              Like
+            </button>
+          )}
 
+          {movie.liked_or_disliked_user === -1 ? (
+            <button
+              className="btn btn-warning"
+              disabled={movie.liked_or_disliked_user === 0}
+              onClick={() => removeLike(-1)}
+            >
+              Remove Dislike
+            </button>
+          ) : (
+            <button
+              className="btn btn-danger"
+              disabled={movie.liked_or_disliked_user === -1}
+              onClick={() => addLike(-1)}
+            >
+              Dislike
+            </button>
+          )}
           <h3>Create Comment</h3>
           <form>
             <div className="form-group">
@@ -97,9 +141,7 @@ export default function Movie() {
               Add Comment
             </button>
           </form>
-
           <h3>Comments</h3>
-
           {comments?.results.length ? (
             <ul>
               {comments.results.map((comment) => (

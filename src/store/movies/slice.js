@@ -9,6 +9,8 @@ const middlewareActions = {
   getComments() {},
   getPopularMovies() {},
   getGenreMovies() {},
+  deleteLike() {},
+  addVisit() {},
 };
 
 const moviesSlice = createSlice({
@@ -38,9 +40,6 @@ const moviesSlice = createSlice({
       state.selectedMovie = action.payload;
     },
     addComment(state, action) {
-      // state.selectedMovie.movie_comments.push(action.payload);
-      // action.payload.results = [...state.comments.results, action.payload];
-      // state.comments.results = action.payload.results;
       state.comments.results.push(action.payload);
     },
     setComments(state, action) {
@@ -61,9 +60,25 @@ const moviesSlice = createSlice({
     },
     setLikes(state, action) {
       state.selectedMovie.likes = state.selectedMovie.likes + 1;
+      if (state.selectedMovie.liked_or_disliked_user === -1) {
+        state.selectedMovie.dislikes = state.selectedMovie.dislikes - 1;
+      }
+      state.selectedMovie.liked_or_disliked_user = 1;
     },
     setDislikes(state, action) {
       state.selectedMovie.dislikes = state.selectedMovie.dislikes + 1;
+      if (state.selectedMovie.liked_or_disliked_user === 1) {
+        state.selectedMovie.likes = state.selectedMovie.likes - 1;
+      }
+      state.selectedMovie.liked_or_disliked_user = -1;
+    },
+    removeLikes(state, action) {
+      state.selectedMovie.likes = state.selectedMovie.likes - 1;
+      state.selectedMovie.liked_or_disliked_user = 0;
+    },
+    removeDislikes(state, action) {
+      state.selectedMovie.dislikes = state.selectedMovie.dislikes - 1;
+      state.selectedMovie.liked_or_disliked_user = 0;
     },
     ...middlewareActions,
   },
@@ -89,4 +104,9 @@ export const {
   getGenreMovies,
   setLikes,
   setDislikes,
+  deleteLike,
+  removeLikes,
+  removeDislikes,
+  setVisit,
+  addVisit,
 } = moviesSlice.actions;

@@ -11,7 +11,7 @@ import authService from "../../services/AuthService";
 
 function* registerHandler(action) {
   try {
-    const data = yield call(authService.register, action.payload.userData);
+    yield call(authService.register, action.payload.userData);
     // yield put(setToken(data));
     if (action.payload.onSuccess) {
       yield call(action.payload.onSuccess);
@@ -23,7 +23,7 @@ function* registerHandler(action) {
 
 function* loginHandler(action) {
   try {
-    const data = yield call(authService.login, action.payload);
+    const data = yield call(authService.login, action.payload.userData);
     yield put(setToken(data.access));
   } catch (error) {
     console.log(error);

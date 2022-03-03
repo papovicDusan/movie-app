@@ -1,5 +1,6 @@
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { useEffect } from "react";
 
 import NavBar from "./components/NavBar";
 import GuestRoute from "./components/shared/GuestRoute";
@@ -9,19 +10,26 @@ import Register from "./pages/Register";
 import AppMovies from "./pages/AppMovies";
 import Movie from "./pages/Movie";
 import CreateMovie from "./pages/CreateMovie";
+import Watchlist from "./pages/Watchlist";
 
-// import { getActiveUser, selectIsAuthenticated } from "./store/auth";
+import {
+  getActiveUser,
+  selectIsAuthenticated,
+  selectActiveUser,
+} from "./store/auth";
 
 function App() {
-  // const dispatch = useDispatch();
-  // const isAuthenticated = useSelector(selectIsAuthenticated);
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const activeUser = useSelector(selectActiveUser);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     dispatch(getActiveUser());
-  //   }
-  // }, []);
+  useEffect(() => {
+    dispatch(getActiveUser());
+  }, []);
 
+  if (activeUser) {
+    console.log("active user", activeUser);
+  }
   return (
     <div>
       <Router>
@@ -41,6 +49,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute exact path="/movies/:id">
             <Movie />
+          </PrivateRoute>
+          <PrivateRoute exact path="/watchlist">
+            <Watchlist />
           </PrivateRoute>
         </Switch>
       </Router>

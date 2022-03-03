@@ -22,6 +22,9 @@ export default function NavBar() {
           <li>
             <Link to="/movies/create">Add Movie</Link>
           </li>
+          <li>
+            <Link to="/watchlist">Watchlist</Link>
+          </li>
           <button onClick={handleLogout}>Logout</button>
         </>
       ) : (

@@ -12,8 +12,12 @@ import {
   selectGenreMovies,
   deleteLike,
   addVisit,
+  addMovieWatchlist,
 } from "../store/movies";
+import { selectActiveUser } from "../store/auth";
 import { Link } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -21,49 +25,43 @@ export default function Movie() {
   const movie = useSelector(selectMovie);
   const comments = useSelector(selectComments);
   const genreMovies = useSelector(selectGenreMovies);
-
-  const [commentData, setCommentData] = useState({
-    content: "",
-  });
+  const activeUser = useSelector(selectActiveUser);
 
   useEffect(() => {
-    dispatch(addVisit(id));
-    dispatch(getMovie(id));
-    dispatch(getComments({ movie_id: id, page: 1 }));
-    dispatch(getGenreMovies(id));
+    if (id) {
+      dispatch(addVisit(id));
+      dispatch(getMovie(id));
+      dispatch(getComments({ movie_id: id, page: 1 }));
+      dispatch(getGenreMovies(id));
+    }
   }, [id]);
 
-  function addComment(event) {
-    event.preventDefault();
-    dispatch(
-      createComment({
-        movie_id: id,
-        comment: commentData,
-        onSuccess: () => {
-          dispatch(getComments({ movie_id: id, page: 1 }));
-        },
-      })
-    );
-    setCommentData({ ...commentData, content: "" });
-  }
-
-  function addLike(number) {
+  const addLike = (number) => {
     dispatch(
       createLike({
         movie_id: movie.id,
         like: { like: number },
       })
     );
-  }
+  };
 
-  function removeLike(number) {
+  const removeLike = (number) => {
     dispatch(
       deleteLike({
         movie_id: movie.id,
         like: { like: number },
       })
     );
-  }
+  };
+
+  const addMovie = (number) => {
+    dispatch(
+      addMovieWatchlist({
+        movie_id: { movie: movie.id },
+        user_id: activeUser.id,
+      })
+    );
+  };
 
   const seeComments = (pageNew) => {
     dispatch(getComments({ movie_id: id, page: pageNew }));
@@ -72,6 +70,7 @@ export default function Movie() {
   if (!movie) {
     return null;
   }
+
   return (
     <div className="container p-1">
       <div className="d-flex bd-highlight">
@@ -118,29 +117,46 @@ export default function Movie() {
               Dislike
             </button>
           )}
-          <h3>Create Comment</h3>
-          <form>
-            <div className="form-group">
-              <label htmlFor="createComment">Create comment</label>
-              <input
-                required
-                className="form-control"
-                id="createComment"
-                placeholder="Content"
-                value={commentData.content}
-                onChange={({ target }) =>
-                  setCommentData({ ...commentData, content: target.value })
-                }
-              />
-            </div>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={addComment}
-            >
-              Add Comment
+
+          {movie.user_watched === true && (
+            <h3 className="text-danger">You've watched this!</h3>
+          )}
+
+          {movie.in_user_watchlist === false && (
+            <button className="btn btn-success" onClick={addMovie}>
+              Add Movie on Watchlist
             </button>
-          </form>
+          )}
+
+          <h3>Create Comment</h3>
+          <Formik
+            initialValues={{
+              content: "",
+            }}
+            validationSchema={Yup.object({
+              content: Yup.string().required("Required"),
+            })}
+            onSubmit={(values, { resetForm }) => {
+              dispatch(
+                createComment({
+                  movie_id: id,
+                  comment: values,
+                  onSuccess: () => {
+                    dispatch(getComments({ movie_id: id, page: 1 }));
+                    resetForm({ values: "" });
+                  },
+                })
+              );
+            }}
+          >
+            <Form>
+              <label htmlFor="content">Create Comment</label>
+              <Field name="content" type="text" />
+              <ErrorMessage name="content" />
+
+              <button type="submit">Submit</button>
+            </Form>
+          </Formik>
           <h3>Comments</h3>
           {comments?.results.length ? (
             <ul>

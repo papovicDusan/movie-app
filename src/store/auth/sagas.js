@@ -25,6 +25,9 @@ function* loginHandler(action) {
   try {
     const data = yield call(authService.login, action.payload.userData);
     yield put(setToken(data.access));
+    if (action.payload.onSuccess) {
+      yield call(action.payload.onSuccess);
+    }
   } catch (error) {
     console.log(error);
   }

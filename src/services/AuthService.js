@@ -2,13 +2,13 @@ import HttpService from "./HttpService";
 
 class AuthService extends HttpService {
   register = async (userData) => {
-    const { data } = await this.client.post("auth/register/", userData);
+    const { data } = await this.client.post("users/", userData);
     // localStorage.setItem("token", data.token);
     return data;
   };
 
   login = async (credentials) => {
-    const { data } = await this.client.post("auth/login/", credentials);
+    const { data } = await this.client.post("login/", credentials);
     localStorage.setItem("token", data.access);
     return data;
   };
@@ -19,7 +19,7 @@ class AuthService extends HttpService {
   };
 
   getActiveUser = async () => {
-    const { data } = await this.client.get("auth/me");
+    const { data } = await this.client.get("/users/me/");
     return data;
   };
 }

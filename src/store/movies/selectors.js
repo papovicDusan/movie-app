@@ -17,3 +17,7 @@ export function selectPopularMovies(state) {
 export function selectGenreMovies(state) {
   return state.movies.genreMovies;
 }
+
+export function selectWatchlist(state) {
+  return state.movies.watchlist;
+}

@@ -58,6 +58,9 @@ export default function AppMovies() {
                       <p>Number of like {movie.likes}</p>
                       <p>Number of dislike {movie.dislikes}</p>
                       <p>Number of visit {movie.visits}</p>
+                      {movie.user_watched === true && (
+                        <p>You've watched this!</p>
+                      )}
                     </div>
                   </div>
                 </div>

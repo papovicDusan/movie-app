@@ -1,35 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectActiveUser,
-  selectIsAuthenticated,
-  getActiveUser,
-} from "../store/auth";
-import { useEffect } from "react";
-import {
-  getWatchlist,
-  selectWatchlist,
-  updateWatchlist,
-  deleteMovieWatchlist,
-} from "../store/movies";
+import { selectActiveUser } from "../store/auth";
+import { updateWatchlist, deleteMovieWatchlist } from "../store/auth";
 import { Link } from "react-router-dom";
 
 export default function Watchlist() {
   const dispatch = useDispatch();
   const activeUser = useSelector(selectActiveUser);
-  const watchlist = useSelector(selectWatchlist);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-
-  useEffect(() => {
-    if (activeUser) {
-      dispatch(getWatchlist(activeUser.id));
-    }
-  }, [activeUser]);
 
   const checkViewed = (id) => {
     dispatch(
       updateWatchlist({
         watchlist_id: id,
-        user_id: activeUser.id,
         is_watched: { is_watched: true },
       })
     );
@@ -39,7 +20,6 @@ export default function Watchlist() {
     dispatch(
       deleteMovieWatchlist({
         watchlist_id: id,
-        user_id: activeUser.id,
       })
     );
   };
@@ -47,12 +27,12 @@ export default function Watchlist() {
   return (
     <div className="container">
       <ul>
-        {watchlist?.map((movie) => (
+        {activeUser?.user_watchlist?.map((movie) => (
           <li key={movie.id}>
             <div
               className="card card-image"
               style={{
-                backgroundImage: `url(${movie.movie.image_url})`,
+                backgroundImage: `url(${movie.movie_object.image_url})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}
@@ -60,12 +40,12 @@ export default function Watchlist() {
               <div className="text-white text-center d-flex align-items-center rgba-black-strong py-5 px-4">
                 <div>
                   <h3 className="card-title pt-2">
-                    <strong>{movie.movie.title}</strong>
+                    <strong>{movie.movie_object.title}</strong>
                   </h3>
-                  <p>{movie.movie.description.substring(0, 100)}</p>
+                  <p>{movie.movie_object.description.substring(0, 100)}</p>
                   <Link
                     className="btn btn-light"
-                    to={`/movies/${movie.movie.id}`}
+                    to={`/movies/${movie.movie_object.id}`}
                   >
                     Movie detail
                   </Link>

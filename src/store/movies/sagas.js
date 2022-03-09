@@ -21,14 +21,6 @@ import {
   removeLikes,
   removeDislikes,
   addVisit,
-  addMovieWatchlist,
-  getWatchlist,
-  setWatchlist,
-  updateWatchlist,
-  setMovieInWatchlist,
-  setMovieIsWatched,
-  deleteMovieWatchlist,
-  removeMovieWatchlist,
 } from "./slice";
 
 function* handleGetMovies(action) {
@@ -161,55 +153,6 @@ function* handleAddVisit(action) {
   }
 }
 
-function* handleAddMovieWatchlist(action) {
-  try {
-    yield call(
-      moviesService.addMovieWatchlist,
-      action.payload.movie_id,
-      action.payload.user_id
-    );
-    yield put(setMovieInWatchlist());
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function* handleGetWatchlist(action) {
-  try {
-    const watchlist = yield call(moviesService.getWatchlist, action.payload);
-    yield put(setWatchlist(watchlist));
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function* handleUpdateWatchlist(action) {
-  try {
-    const watchlist = yield call(
-      moviesService.updateWatchlist,
-      action.payload.watchlist_id,
-      action.payload.user_id,
-      action.payload.is_watched
-    );
-    yield put(setMovieIsWatched(action.payload.watchlist_id));
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function* handleDeleteMovieWatchlist(action) {
-  try {
-    yield call(
-      moviesService.deleteMovieWatchlist,
-      action.payload.watchlist_id,
-      action.payload.user_id
-    );
-    yield put(removeMovieWatchlist(action.payload.watchlist_id));
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 export function* watchGetMovies() {
   yield takeLatest(getMovies.type, handleGetMovies);
 }
@@ -248,20 +191,4 @@ export function* watchGetGenreMovies() {
 
 export function* watchAddVisit() {
   yield takeLatest(addVisit.type, handleAddVisit);
-}
-
-export function* watchAddMovieWatchlist() {
-  yield takeLatest(addMovieWatchlist.type, handleAddMovieWatchlist);
-}
-
-export function* watchGetWatchlist() {
-  yield takeLatest(getWatchlist.type, handleGetWatchlist);
-}
-
-export function* watchUpdateWatchlist() {
-  yield takeLatest(updateWatchlist.type, handleUpdateWatchlist);
-}
-
-export function* watchDeleteMovieWatchlist() {
-  yield takeLatest(deleteMovieWatchlist.type, handleDeleteMovieWatchlist);
 }

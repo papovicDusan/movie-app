@@ -12,24 +12,18 @@ import Movie from "./pages/Movie";
 import CreateMovie from "./pages/CreateMovie";
 import Watchlist from "./pages/Watchlist";
 
-import {
-  getActiveUser,
-  selectIsAuthenticated,
-  selectActiveUser,
-} from "./store/auth";
+import { getActiveUser, selectIsAuthenticated } from "./store/auth";
 
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const activeUser = useSelector(selectActiveUser);
 
   useEffect(() => {
-    dispatch(getActiveUser());
+    if (isAuthenticated) {
+      dispatch(getActiveUser());
+    }
   }, []);
 
-  if (activeUser) {
-    console.log("active user", activeUser);
-  }
   return (
     <div>
       <Router>

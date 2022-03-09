@@ -69,34 +69,6 @@ class MoviesService extends HttpService {
     const { data } = await this.client.patch(`movies/${id}/visits/`);
     return data;
   };
-
-  addMovieWatchlist = async (movie, user_id) => {
-    const { data } = await this.client.post(
-      `users/${user_id}/watchlist/`,
-      movie
-    );
-    return data;
-  };
-
-  getWatchlist = async (user_id) => {
-    const { data } = await this.client.get(`users/${user_id}/watchlist/`);
-    return data;
-  };
-
-  updateWatchlist = async (watchlist_id, user_id, is_watched) => {
-    const { data } = await this.client.patch(
-      `users/${user_id}/watchlist/${watchlist_id}/`,
-      is_watched
-    );
-    return data;
-  };
-
-  deleteMovieWatchlist = async (watchlist_id, user_id) => {
-    const { data } = await this.client.delete(
-      `users/${user_id}/watchlist/${watchlist_id}/`
-    );
-    return data;
-  };
 }
 
 const moviesService = new MoviesService();

@@ -10,11 +10,24 @@ import {
 import { Link } from "react-router-dom";
 import MoviesSearch from "../components/MoviesSearch";
 import MoviesFilter from "../components/MoviesFilter";
+import { selectActiveUser } from "../store/auth";
 
 export default function AppMovies() {
   const movies = useSelector(selectMovies);
   const dispatch = useDispatch();
   const popularMovies = useSelector(selectPopularMovies);
+  const activeUser = useSelector(selectActiveUser);
+
+  const isWatched = [];
+  if (movies && activeUser) {
+    movies.results.map((movie) => {
+      const watchlistElement = activeUser.user_watchlist.find(
+        (watchlist) => watchlist.movie === movie.id
+      );
+      const isWatchedMovie = !!watchlistElement?.is_watched;
+      isWatched[movie.id] = isWatchedMovie;
+    });
+  }
 
   useEffect(() => {
     dispatch(getMovies({ genre: "", search: "", page: 1 }));
@@ -33,7 +46,7 @@ export default function AppMovies() {
           <MoviesSearch />
           <MoviesFilter />
           <ul>
-            {movies.results.map((movie) => (
+            {movies?.results.map((movie) => (
               <li key={movie.id}>
                 <div
                   className="card card-image"
@@ -58,9 +71,7 @@ export default function AppMovies() {
                       <p>Number of like {movie.likes}</p>
                       <p>Number of dislike {movie.dislikes}</p>
                       <p>Number of visit {movie.visits}</p>
-                      {movie.user_watched === true && (
-                        <p>You've watched this!</p>
-                      )}
+                      {isWatched[movie.id] && <p>You've watched this!</p>}
                     </div>
                   </div>
                 </div>

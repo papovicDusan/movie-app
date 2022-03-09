@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {
@@ -12,9 +12,8 @@ import {
   selectGenreMovies,
   deleteLike,
   addVisit,
-  addMovieWatchlist,
 } from "../store/movies";
-import { selectActiveUser } from "../store/auth";
+import { selectActiveUser, addMovieWatchlist } from "../store/auth";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -26,6 +25,17 @@ export default function Movie() {
   const comments = useSelector(selectComments);
   const genreMovies = useSelector(selectGenreMovies);
   const activeUser = useSelector(selectActiveUser);
+
+  let isInWatchlist;
+  let isWatched;
+
+  if (movie && activeUser) {
+    const watchlistElement = activeUser.user_watchlist.find(
+      (watchlist) => watchlist.movie === movie.id
+    );
+    isInWatchlist = !!watchlistElement;
+    isWatched = !!watchlistElement?.is_watched;
+  }
 
   useEffect(() => {
     if (id) {
@@ -54,11 +64,10 @@ export default function Movie() {
     );
   };
 
-  const addMovie = (number) => {
+  const addMovie = () => {
     dispatch(
       addMovieWatchlist({
         movie_id: { movie: movie.id },
-        user_id: activeUser.id,
       })
     );
   };
@@ -99,7 +108,6 @@ export default function Movie() {
               Like
             </button>
           )}
-
           {movie.liked_or_disliked_user === -1 ? (
             <button
               className="btn btn-warning"
@@ -118,11 +126,9 @@ export default function Movie() {
             </button>
           )}
 
-          {movie.user_watched === true && (
-            <h3 className="text-danger">You've watched this!</h3>
-          )}
+          {isWatched && <h3 className="text-danger">You've watched this!</h3>}
 
-          {movie.in_user_watchlist === false && (
+          {!isInWatchlist && (
             <button className="btn btn-success" onClick={addMovie}>
               Add Movie on Watchlist
             </button>
@@ -160,7 +166,7 @@ export default function Movie() {
           <h3>Comments</h3>
           {comments?.results.length ? (
             <ul>
-              {comments.results.map((comment) => (
+              {comments?.results?.map((comment) => (
                 <li key={comment.id}>
                   <div> {comment.content}</div>
                 </li>
@@ -184,7 +190,7 @@ export default function Movie() {
           <div className="p-4 pt-5">
             <h3>Related movies</h3>
             <ul className="list-unstyled components mb-5">
-              {genreMovies.map((movie) => (
+              {genreMovies?.map((movie) => (
                 <li key={movie.id}>
                   <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
                 </li>

@@ -11,10 +11,6 @@ const middlewareActions = {
   getGenreMovies() {},
   deleteLike() {},
   addVisit() {},
-  addMovieWatchlist() {},
-  getWatchlist() {},
-  updateWatchlist() {},
-  deleteMovieWatchlist() {},
 };
 
 const moviesSlice = createSlice({
@@ -35,7 +31,6 @@ const moviesSlice = createSlice({
     },
     popularMovies: [],
     genreMovies: [],
-    watchlist: null,
   },
   reducers: {
     setMovies(state, action) {
@@ -85,25 +80,6 @@ const moviesSlice = createSlice({
       state.selectedMovie.dislikes = state.selectedMovie.dislikes - 1;
       state.selectedMovie.liked_or_disliked_user = 0;
     },
-    setWatchlist(state, action) {
-      state.watchlist = action.payload;
-    },
-    setMovieInWatchlist(state, action) {
-      state.selectedMovie.in_user_watchlist = true;
-    },
-    setMovieIsWatched(state, action) {
-      state.watchlist = state.watchlist.map((movie) => {
-        if (movie.id === action.payload) {
-          movie.is_watched = true;
-        }
-        return movie;
-      });
-    },
-    removeMovieWatchlist(state, action) {
-      state.watchlist = state.watchlist.filter(
-        (movie) => movie.id !== action.payload
-      );
-    },
     ...middlewareActions,
   },
 });
@@ -133,12 +109,4 @@ export const {
   removeDislikes,
   setVisit,
   addVisit,
-  addMovieWatchlist,
-  getWatchlist,
-  setWatchlist,
-  updateWatchlist,
-  setMovieInWatchlist,
-  setMovieIsWatched,
-  deleteMovieWatchlist,
-  removeMovieWatchlist,
 } = moviesSlice.actions;

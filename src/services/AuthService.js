@@ -22,6 +22,29 @@ class AuthService extends HttpService {
     const { data } = await this.client.get("/users/me/");
     return data;
   };
+
+  addMovieWatchlist = async (movie) => {
+    const { data } = await this.client.post(`watchlist/`, movie);
+    return data;
+  };
+
+  getWatchlist = async (user_id) => {
+    const { data } = await this.client.get(`users/${user_id}/watchlist/`);
+    return data;
+  };
+
+  updateWatchlist = async (watchlist_id, is_watched) => {
+    const { data } = await this.client.patch(
+      `watchlist/${watchlist_id}/`,
+      is_watched
+    );
+    return data;
+  };
+
+  deleteMovieWatchlist = async (watchlist_id) => {
+    const { data } = await this.client.delete(`watchlist/${watchlist_id}/`);
+    return data;
+  };
 }
 
 export default new AuthService();

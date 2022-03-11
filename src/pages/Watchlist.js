@@ -32,7 +32,7 @@ export default function Watchlist() {
             <div
               className="card card-image"
               style={{
-                backgroundImage: `url(${movie.movie_object.image_url})`,
+                backgroundImage: `url(${process.env.REACT_APP_SERVER_DOMAIN}${movie.movie_object.thumbnail})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}

@@ -84,7 +84,11 @@ export default function Movie() {
     <div className="container p-1">
       <div className="d-flex bd-highlight">
         <div className="col-9">
-          <img width="100%" src={movie.image_url} alt="pic-any" />
+          <img
+            width="100%"
+            src={`${process.env.REACT_APP_SERVER_DOMAIN}${movie.full_size}`}
+            alt="pic-any"
+          />
           <h1>{movie.title}</h1>
           <h3>{movie.genre}</h3>
           <p>{movie.description}</p>

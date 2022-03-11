@@ -51,7 +51,7 @@ export default function AppMovies() {
                 <div
                   className="card card-image"
                   style={{
-                    backgroundImage: `url(${movie.image_url})`,
+                    backgroundImage: `url(${process.env.REACT_APP_SERVER_DOMAIN}${movie.thumbnail})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                   }}

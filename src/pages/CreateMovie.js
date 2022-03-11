@@ -30,7 +30,7 @@ export default function CreateMovie() {
       initialValues={{
         title: "",
         description: "",
-        image_url: "",
+        image_url: null,
         genre: typeMovies[0],
       }}
       validationSchema={Yup.object({
@@ -50,29 +50,37 @@ export default function CreateMovie() {
         );
       }}
     >
-      <Form>
-        <label htmlFor="title">Title</label>
-        <Field name="title" type="text" />
-        <ErrorMessage name="title" />
+      {({ errors, touched, setFieldValue }) => (
+        <Form>
+          <label htmlFor="title">Title</label>
+          <Field name="title" type="text" />
+          <ErrorMessage name="title" />
 
-        <label htmlFor="description">Description</label>
-        <Field name="description" type="text" />
-        <ErrorMessage name="description" />
+          <label htmlFor="description">Description</label>
+          <Field name="description" type="text" />
+          <ErrorMessage name="description" />
 
-        <label htmlFor="image_url">Image</label>
-        <Field name="image_url" type="text" />
-        <ErrorMessage name="image_url" />
+          <label htmlFor="image_url">Image</label>
+          <input
+            name="image_url"
+            type="file"
+            onChange={(event) => {
+              setFieldValue("image_url", event.target.files[0]);
+            }}
+          />
+          <ErrorMessage name="image_url" />
 
-        <Field as="select" name="genre">
-          {typeMovies.map((movie) => (
-            <option key={movie} value={movie}>
-              {movie}
-            </option>
-          ))}
-        </Field>
+          <Field as="select" name="genre">
+            {typeMovies.map((movie) => (
+              <option key={movie} value={movie}>
+                {movie}
+              </option>
+            ))}
+          </Field>
 
-        <button type="submit">Submit</button>
-      </Form>
+          <button type="submit">Submit</button>
+        </Form>
+      )}
     </Formik>
   );
 }

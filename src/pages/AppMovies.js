@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import MoviesSearch from "../components/MoviesSearch";
 import MoviesFilter from "../components/MoviesFilter";
 import { selectActiveUser } from "../store/auth";
+import { serverURL } from "../environment";
 
 export default function AppMovies() {
   const movies = useSelector(selectMovies);
@@ -51,7 +52,7 @@ export default function AppMovies() {
                 <div
                   className="card card-image"
                   style={{
-                    backgroundImage: `url(${movie.image_url})`,
+                    backgroundImage: `url(${serverURL}${movie.thumbnail})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                   }}

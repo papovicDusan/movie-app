@@ -17,6 +17,7 @@ import { selectActiveUser, addMovieWatchlist } from "../store/auth";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { serverURL } from "../environment";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -84,7 +85,11 @@ export default function Movie() {
     <div className="container p-1">
       <div className="d-flex bd-highlight">
         <div className="col-9">
-          <img width="100%" src={movie.image_url} alt="pic-any" />
+          <img
+            width="100%"
+            src={`${serverURL}${movie.full_size}`}
+            alt="pic-any"
+          />
           <h1>{movie.title}</h1>
           <h3>{movie.genre}</h3>
           <p>{movie.description}</p>

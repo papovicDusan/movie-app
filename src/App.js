@@ -11,6 +11,7 @@ import AppMovies from "./pages/AppMovies";
 import Movie from "./pages/Movie";
 import CreateMovie from "./pages/CreateMovie";
 import Watchlist from "./pages/Watchlist";
+import CreateMovieOMDB from "./pages/CreateMovieOMDB";
 
 import { getActiveUser, selectIsAuthenticated } from "./store/auth";
 
@@ -40,6 +41,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute exact path="/movies/create">
             <CreateMovie />
+          </PrivateRoute>
+          <PrivateRoute exact path="/movies/create-omdb">
+            <CreateMovieOMDB />
           </PrivateRoute>
           <PrivateRoute exact path="/movies/:id">
             <Movie />

@@ -26,6 +26,11 @@ export default function NavBar() {
             </Link>
           </li>
           <li className="nav-item">
+            <Link className="nav-link" to="/movies/create-omdb">
+              Add Movie OMDB
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link className="nav-link" to="/watchlist">
               Watchlist
             </Link>

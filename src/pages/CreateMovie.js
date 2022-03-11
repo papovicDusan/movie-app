@@ -25,6 +25,15 @@ export default function CreateMovie() {
 
   const dispatch = useDispatch();
 
+  const getDataForm = (values) => {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("image_url", values.image_url);
+    formData.append("genre", values.genre);
+    return formData;
+  };
+
   return (
     <Formik
       initialValues={{
@@ -42,7 +51,7 @@ export default function CreateMovie() {
       onSubmit={(values) => {
         dispatch(
           createMovie({
-            movie: values,
+            movie: getDataForm(values),
             onSuccess: () => {
               history.push(`/movies`);
             },

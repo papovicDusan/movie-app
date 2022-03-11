@@ -25,13 +25,7 @@ class MoviesService extends HttpService {
   };
 
   createMovie = async (movieData) => {
-    const formData = new FormData();
-    formData.append("title", movieData.title);
-    formData.append("description", movieData.description);
-    formData.append("image_url", movieData.image_url);
-    formData.append("genre", movieData.genre);
-
-    const { data } = await this.client.post(`movies/`, formData);
+    const { data } = await this.client.post(`movies/`, movieData);
     return data;
   };
 

@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectActiveUser } from "../store/auth";
 import { updateWatchlist, deleteMovieWatchlist } from "../store/auth";
 import { Link } from "react-router-dom";
-import { serverURL } from "../environment";
 
 export default function Watchlist() {
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ export default function Watchlist() {
             <div
               className="card card-image"
               style={{
-                backgroundImage: `url(${serverURL}${movie.movie_object.thumbnail})`,
+                backgroundImage: `url(${process.env.REACT_APP_SERVER_DOMAIN}${movie.movie_object.thumbnail})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}
